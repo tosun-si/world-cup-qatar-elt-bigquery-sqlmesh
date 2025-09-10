@@ -1,0 +1,14 @@
+[project]
+name = "world-cup-qatar-elt-sqlmesh"
+version = "0.1.0"
+description = "A real world use case of ELT with SQLMesh, BigQuery and DuckDB, based on Qatar Fifa World Cup Data"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "sqlmesh==0.211.2"
+]
+
+[dependency-groups]
+dev = [
+    "pytest==8.3.5"
+]
