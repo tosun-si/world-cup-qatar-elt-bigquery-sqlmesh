@@ -5,7 +5,8 @@ description = "A real world use case of ELT with SQLMesh, BigQuery and DuckDB, b
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "sqlmesh==0.211.2"
+    "sqlmesh[bigquery]==0.211.2",
+    "bigframes==2.27.0"
 ]
 
 [dependency-groups]

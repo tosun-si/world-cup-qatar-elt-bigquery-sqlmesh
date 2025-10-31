@@ -1,31 +1,33 @@
 # --- Gateway Connection ---
 gateways:
-  duckdb:
-    connection:
-      # For more information on configuring the connection to your execution engine, visit:
-      # https://sqlmesh.readthedocs.io/en/stable/reference/configuration/#connection
-      # https://sqlmesh.readthedocs.io/en/stable/integrations/engines/duckdb/#connection-options
-      type: duckdb
-      database: db.db
-      # concurrent_tasks: 1
-      # register_comments: True
-      # pre_ping: False
-      # pretty_sql: False
-      # s__mote_chema_differ_overrides:
-      # catalogs: 
-      # extensions: 
-      # connector_config: 
-      # secrets: 
-      # filesystems: 
-      # token: 
 
-default_gateway: duckdb
+  bigquery:
+    connection:
+      # BigQuery gateway configuration
+      # Docs: https://sqlmesh.readthedocs.io/en/stable/integrations/engines/bigquery/#connection-options
+      type: bigquery
+      project: gb-poc-373711
+      location: europe-west1
+      # Optional: path to your service account key if not using ADC
+      # keyfile: /path/to/service_account.json
+      # Optional settings:
+
+      # timeout: 300
+      # priority: INTERACTIVE
+      # retries: 3
+      # job_creation_timeout_seconds: 30
+      # job_poll_interval_seconds: 5
+      # job_labels:
+      #   env: dev
+      #   source: sqlmesh
 
 # --- Model Defaults ---
 # https://sqlmesh.readthedocs.io/en/stable/reference/model_configuration/#model-defaults
 
+default_gateway: bigquery
+
 model_defaults:
-  dialect: duckdb
+  dialect: bigquery
   start: 2025-08-27 # Start date for backfill history
   cron: '@daily'    # Run models daily at 12am UTC (can override per model)
 

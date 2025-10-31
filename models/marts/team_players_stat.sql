@@ -1,8 +1,10 @@
-MODEL (
-  name qatar_fifa_world_cup.team_players_stat,
-  kind FULL,
-  dialect duckdb,
-  gateway duckdb
+MODEL(
+    name qatar_fifa_world_cup.team_players_stat_mart,
+    kind FULL,
+    partitioned_by DATE(ingestionDate),
+    clustered_by teamName,
+    dialect bigquery,
+    gateway bigquery
 );
 
 WITH
@@ -15,11 +17,11 @@ WITH
         SELECT
             nationality,
             STRUCT(
-                playerName AS playerName,
-                appearances AS appearances,
-                "savePercentage" AS savePercentage,
-                "cleanSheets" AS cleanSheets
-            ) AS goalKeeperStatsStruct
+                playerName,
+                appearances,
+                savePercentage,
+                cleanSheets
+                ) AS goalKeeperStatsStruct
         FROM team_players_stat_raw
         WHERE isGoalKeeperStatsExist IS TRUE
     ),
@@ -27,18 +29,17 @@ WITH
     goalKeeperStatsPerTeam AS (
         SELECT
             nationality,
-            FIRST(goalKeeperStatsStruct ORDER BY goalKeeperStatsStruct.savePercentage DESC) AS stats
+            ARRAY_AGG(goalKeeperStatsStruct ORDER BY goalKeeperStatsStruct.savePercentage DESC LIMIT 1)[OFFSET(0)] AS stats
         FROM goalKeepersStats
         GROUP BY nationality
     )
 
 SELECT
     statRaw.nationality AS teamName,
-    "nationalTeamKitSponsor",
-    "fifaRanking",
-    SUM("goalsScored") AS teamTotalGoals,
-    CURRENT_TIMESTAMP AS ingestionDate,
-
+    nationalTeamKitSponsor,
+    fifaRanking,
+    SUM(goalsScored) AS teamTotalGoals,
+    CURRENT_TIMESTAMP() AS ingestionDate,
     goalKeeperStatsPerTeam.stats AS goalKeeper,
 
     @build_player_stats(goalsScored, appearances, brandSponsorAndUsed, club, position, playerDob, playerName) AS topScorers,
@@ -49,11 +50,10 @@ SELECT
     @build_player_stats(interceptionsPerNinety, appearances, brandSponsorAndUsed, club, position, playerDob, playerName) AS playersMostInterception,
     @build_player_stats(tacklesPerNinety, appearances, brandSponsorAndUsed, club, position, playerDob, playerName) AS playersMostSuccessfulTackles
 
-FROM team_players_stat_raw statRaw
+FROM team_players_stat_raw AS statRaw
 JOIN goalKeeperStatsPerTeam ON statRaw.nationality = goalKeeperStatsPerTeam.nationality
-
 GROUP BY
     statRaw.nationality,
-    "nationalTeamKitSponsor",
-    "fifaRanking",
+    nationalTeamKitSponsor,
+    fifaRanking,
     goalKeeperStatsPerTeam.stats;

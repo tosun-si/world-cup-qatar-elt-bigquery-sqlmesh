@@ -3,6 +3,8 @@ MODEL (
   kind SEED (
     path '../../seeds/team_players_stat_raw.csv'
   ),
+  dialect bigquery,
+  gateway bigquery,
   columns (
     nationality TEXT,
     fifaRanking TEXT,
