@@ -6,7 +6,7 @@ from sqlmesh import ExecutionContext, model
 
 
 @model(
-    "qatar_fifa_world_cup.team_players_stat_python",
+    "qatar_fifa_world_cup_sqlmesh.team_players_stat_mart_python",
     kind="FULL",
     partitioned_by="DATE(ingestionDate)",
     clustered_by="teamName",
@@ -48,7 +48,10 @@ def execute(
     """
 
     print("📊 Loading team players statistics...")
-    df = context.bigframe.read_gbq("qatar_fifa_world_cup.team_players_stat_raw_cleaned")
+    source_table = context.table("qatar_fifa_world_cup_sqlmesh.team_players_stat_raw_cleaned")
+    clean_table = source_table.replace("`", "")
+
+    df = context.bigframe.read_gbq(clean_table)
     print(f"✅ Loaded {len(df)} records")
 
     # 🧤 Goalkeeper stats

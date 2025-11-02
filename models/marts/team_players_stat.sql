@@ -1,5 +1,5 @@
 MODEL(
-    name qatar_fifa_world_cup.team_players_stat_mart,
+    name qatar_fifa_world_cup_sqlmesh.team_players_stat_mart,
     kind FULL,
     partitioned_by DATE(ingestionDate),
     clustered_by teamName,
@@ -10,7 +10,7 @@ MODEL(
 WITH
     team_players_stat_raw AS (
         SELECT *
-        FROM qatar_fifa_world_cup.team_players_stat_raw_cleaned
+        FROM qatar_fifa_world_cup_sqlmesh.team_players_stat_raw_cleaned
     ),
 
     goalKeepersStats AS (

@@ -1,5 +1,5 @@
 MODEL(
-    name qatar_fifa_world_cup.team_players_stat_raw_cleaned,
+    name qatar_fifa_world_cup_sqlmesh.team_players_stat_raw_cleaned,
     kind VIEW,
     dialect bigquery,
     gateway bigquery
@@ -25,4 +25,4 @@ SELECT
     nationalTeamKitSponsor,
     nationalTeamJerseyNumber,
     playerDob
-FROM qatar_fifa_world_cup.team_players_stat_raw;
+FROM qatar_fifa_world_cup_sqlmesh.team_players_stat_raw;
