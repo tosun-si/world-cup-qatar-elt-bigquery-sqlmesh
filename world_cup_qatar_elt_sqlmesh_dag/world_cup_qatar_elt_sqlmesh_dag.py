@@ -17,7 +17,7 @@ SQLMESH_PROJECT_DIR = os.environ.get(
 )
 
 with DAG(
-        dag_id="world_cup_qatar_elt_bq_dag",
+        dag_id="world_cup_qatar_elt_sqlmesh_dag",
         default_args=default_args,
         schedule=None,
         catchup=False,
