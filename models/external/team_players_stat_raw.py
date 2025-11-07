@@ -1,9 +1,10 @@
+import io
 import typing as t
 from datetime import datetime
 
-import gcsfs
 import pandas as pd
 from bigframes.pandas import DataFrame
+from google.cloud import storage
 from sqlmesh import ExecutionContext, model
 
 
@@ -40,9 +41,25 @@ def execute(
 ) -> DataFrame:
     print("📦 Loading data from GCS...")
 
-    fs = gcsfs.GCSFileSystem(project="gb-poc-373711")
-    paths = fs.glob("gs://mazlum_dev/world_cup_team_stats/input/world_cup_team_players_stats_raw_*.json")
+    client = storage.Client(project="gb-poc-373711")
+    blobs = client.list_blobs(
+        "mazlum_dev",
+        prefix="world_cup_team_stats/input/world_cup_team_players_stats_raw_",
+    )
 
-    df = pd.concat([pd.read_json(fs.open(p), lines=True) for p in paths])
+    dfs = []
+    for blob in blobs:
+        if blob.name.endswith(".json"):
+            print(f"⬇️ Downloading {blob.name}")
+            content = blob.download_as_text(encoding="utf-8")
+
+            df_part = pd.read_json(io.StringIO(content), lines=True)
+            dfs.append(df_part)
+
+    if not dfs:
+        raise RuntimeError("❌ No JSON files found in the GCS prefix!")
+
+    df = pd.concat(dfs, ignore_index=True)
+    print(f"✅ Loaded {len(df)} rows from GCS.")
 
     return context.bigframe.read_pandas(df)

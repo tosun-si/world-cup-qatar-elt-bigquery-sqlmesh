@@ -6,7 +6,8 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "sqlmesh[bigquery]==0.211.2",
-    "bigframes==2.27.0"
+    "bigframes==2.27.0",
+    "apache-airflow[google]==3.1.1"
 ]
 
 [dependency-groups]

@@ -22,3 +22,20 @@ If you want to force cleanup immediately, run:
 ```bash
 sqlmesh janitor --ignore-ttl
 ```
+
+### Deploy the DAG and conf in a local Airflow from Docker
+
+```bash
+docker run -it \
+    -p 8080:8080 \
+    -e GOOGLE_APPLICATION_CREDENTIALS=/root/.config/gcloud/application_default_credentials.json \
+    -e GCP_PROJECT=gb-poc-373711 \
+    -v $HOME/.config/gcloud/application_default_credentials.json:/root/.config/gcloud/application_default_credentials.json \
+    -v $(pwd)/world_cup_qatar_elt_sqlmesh_dag:/opt/airflow/dags/world_cup_qatar_elt_sqlmesh_dag \
+    -v $(pwd)/models:/opt/airflow/dags/world_cup_qatar_elt_sqlmesh_project/models \
+    -v $(pwd)/macros:/opt/airflow/dags/world_cup_qatar_elt_sqlmesh_project/macros \
+    -v $(pwd)/seeds:/opt/airflow/dags/world_cup_qatar_elt_sqlmesh_project/seeds \
+    -v $(pwd)/config.yaml:/opt/airflow/dags/world_cup_qatar_elt_sqlmesh_project/config.yaml \
+    -v $(pwd)/config:/opt/airflow/config \
+    airflow-dev
+```
