@@ -5,6 +5,7 @@ MODEL (
   ),
   dialect bigquery,
   gateway bigquery,
+  tags ["staging"],
   columns (
     teamName TEXT,
     fifaRanking INTEGER

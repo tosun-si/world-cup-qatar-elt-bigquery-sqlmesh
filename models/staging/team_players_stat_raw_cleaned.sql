@@ -2,7 +2,13 @@ MODEL(
     name qatar_fifa_world_cup_sqlmesh.team_players_stat_raw_cleaned,
     kind VIEW,
     dialect bigquery,
-    gateway bigquery
+    gateway bigquery,
+    tags ["staging"],
+    column_descriptions (
+        nationality = 'Player nationality',
+        goalsScored = 'Goal scored for the player',
+        assistsProvided = 'Assist provided for the player'
+    )
 );
 
 SELECT

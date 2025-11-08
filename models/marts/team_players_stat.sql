@@ -4,7 +4,15 @@ MODEL(
     partitioned_by DATE(ingestionDate),
     clustered_by teamName,
     dialect bigquery,
-    gateway bigquery
+    gateway bigquery,
+    tags ["mart"],
+    column_descriptions (
+        teamName = 'Team name',
+        teamTotalGoals = 'Team total goals',
+        goalKeeper = 'Goal keeper stats struct',
+        topScorers = 'Top scorers struct',
+        bestPassers = 'Best passers struct'
+    )
 );
 
 WITH

@@ -39,3 +39,21 @@ docker run -it \
     -v $(pwd)/config:/opt/airflow/config \
     airflow-dev
 ```
+
+### Run the SQLMesh UI
+
+Build:
+
+```bash
+docker build -t sqlmesh-ui -f sqlmesh_ui/Dockerfile .
+```
+
+Run:
+
+```bash
+docker run -it \
+  -p 8000:8000 \
+  -e GOOGLE_APPLICATION_CREDENTIALS=/root/.config/gcloud/application_default_credentials.json \
+  -v $HOME/.config/gcloud/application_default_credentials.json:/root/.config/gcloud/application_default_credentials.json:ro \
+  sqlmesh-ui
+```
