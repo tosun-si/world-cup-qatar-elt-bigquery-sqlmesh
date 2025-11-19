@@ -8,9 +8,6 @@ gateways:
       type: bigquery
       project: gb-poc-373711
       location: europe-west1
-      # Optional: path to your service account key if not using ADC
-      # keyfile: /path/to/service_account.json
-      # Optional settings:
 
       # timeout: 300
       # priority: INTERACTIVE
@@ -21,19 +18,12 @@ gateways:
       #   env: dev
       #   source: sqlmesh
 
-# --- Model Defaults ---
-# https://sqlmesh.readthedocs.io/en/stable/reference/model_configuration/#model-defaults
-
 default_gateway: bigquery
 
 model_defaults:
   dialect: bigquery
   start: 2025-08-27 # Start date for backfill history
   cron: '@daily'    # Run models daily at 12am UTC (can override per model)
-
-# --- Linting Rules ---
-# Enforce standards for your team
-# https://sqlmesh.readthedocs.io/en/stable/guides/linter/
 
 linter:
   enabled: true

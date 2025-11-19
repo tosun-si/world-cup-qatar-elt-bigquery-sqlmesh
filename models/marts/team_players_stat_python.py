@@ -164,10 +164,8 @@ def execute(
     result = result.merge(best_passers, on="teamName", how="left")
     result = result.merge(best_dribblers, on="teamName", how="left")
 
-    # ✅ Add metadata
     result = result.assign(ingestionDate=execution_time)
 
-    # ✅ Final columns
     final_columns = [
         "teamName",
         "nationalTeamKitSponsor",
