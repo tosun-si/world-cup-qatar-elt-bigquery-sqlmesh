@@ -158,7 +158,6 @@ def execute(
     # Normalize types before merging
     result["teamName"] = result["teamName"].astype(str)
 
-    # Perform merges
     result = result.merge(best_goalkeepers, on="teamName", how="left")
     result = result.merge(top_scorers, on="teamName", how="left")
     result = result.merge(best_passers, on="teamName", how="left")

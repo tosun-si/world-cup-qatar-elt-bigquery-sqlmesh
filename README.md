@@ -23,7 +23,13 @@ If you want to force cleanup immediately, run:
 sqlmesh janitor --ignore-ttl
 ```
 
-### Deploy the DAG and conf in a local Airflow from Docker
+## Create a dev env from prod
+
+```bash
+sqlmesh plan dev --include-unmodified
+```
+
+## Deploy the DAG and conf in a local Airflow from Docker
 
 ```bash
 docker run -it \
